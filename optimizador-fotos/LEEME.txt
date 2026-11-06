@@ -1,0 +1,124 @@
+OPTIMIZADOR DE FOTOS Y VIDEOS (y quitar fondo a plantas)
+========================================================
+
+Le pasas fotos y videos sueltos o carpetas completas (revueltos, no importa) y los
+deja ligeros sin que se note la diferencia. Los originales NUNCA se tocan: todo se
+guarda en otra carpeta (por defecto Imagenes\Optimizados).
+
+Que hace con cada FOTO
+- La endereza (las de celular que salen de lado).
+- La reduce al tamano del perfil que elijas.
+- Le quita los metadatos: datos de la camara y la ubicacion GPS.
+- Corrige el color de las fotos de iPhone (Display P3 a sRGB) para que no se vean apagadas.
+- La guarda en WebP o JPG. Los PNG con transparencia (logos) la conservan en WebP.
+- Si ya era ligera, la copia tal cual en vez de hacerla mas pesada.
+- Acepta JPG, PNG, WebP, HEIC (iPhone), BMP y TIFF.
+
+Que hace con cada VIDEO
+- Lo endereza (videos verticales de celular).
+- Lo reduce (por ejemplo de 4K a 1920 px) y lo deja en maximo 30 cuadros por segundo.
+- Lo pasa a MP4 (H.264): se ve en cualquier navegador y celular.
+- Le quita los metadatos, incluida la ubicacion GPS.
+- Los videos HDR de iPhone los pasa a color normal para que no se vean deslavados.
+- Lo deja listo para web: empieza a reproducirse antes de terminar de descargarse.
+- Opcional: le quita el sonido y saca la "imagen de espera" (el primer cuadro en WebP).
+- Si ya era ligero, no lo hace mas pesado: solo lo limpia.
+- Acepta MP4, MOV (iPhone), M4V, AVI, MKV, WebM, 3GP, WMV y MTS.
+- Mientras trabaja ves el porcentaje, y con "Detener" lo cancelas cuando quieras.
+
+QUITAR FONDO (para las cards de Plantas)
+- Le quita el fondo a la foto de la planta y la deja sola, centrada en un cuadro
+  (las cards del sitio son cuadradas), con fondo blanco o transparente.
+- Orden: primero se quita el fondo a la foto ORIGINAL (asi las orillas de las hojas
+  salen finas) y al final se reduce y se comprime en WebP.
+- Usa inteligencia artificial que corre en tu compu. La primera vez descarga los
+  modelos (unos 170 MB cada uno); despues funciona sin internet.
+- Hay dos modelos y ninguno gana siempre: ISNet es mejor con hojas finas (romero) y
+  U2Net respeta mejor las macetas oscuras. Por eso te muestra los dos y tu eliges.
+
+
+1. INSTALAR (una sola vez)
+--------------------------
+1. Instala Python 3.11 o mas nuevo desde https://www.python.org/downloads/
+   IMPORTANTE: marca "Add python.exe to PATH" en la primera pantalla.
+2. Doble clic en "Abrir optimizador.bat". La primera vez instala Pillow,
+   pillow-heif, tkinterdnd2, imageio-ffmpeg (trae ffmpeg, el que comprime los
+   videos) y rembg (el que quita fondos). Tarda unos minutos y luego abre la ventana.
+
+Si prefieres hacerlo a mano:   pip install -r requirements.txt
+y luego:                        python optimizador.py
+
+
+2. USARLO
+---------
+1. Agrega fotos, videos o carpetas con los botones, o arrastralos a la lista.
+   (Tambien puedes arrastrarlos encima de "Abrir optimizador.bat".)
+2. Revisa las dos pestanas de ajustes:
+   FOTOS
+   - Vivero, plantas, fertilizantes y novedades (1600 px): para casi todo el panel.
+   - Vivero, carrusel y portadas (2400 px): fotos del carrusel y portadas de catalogo.
+   - Web en general, WhatsApp, Correo, o Mismo tamano.
+   VIDEOS
+   - Vivero, carrusel (1920 px, sin audio, con imagen de espera): para los videos de la portada.
+   - Web y redes (1280 px, con audio), Muy ligero (720 px) o Mismo tamano.
+3. Optimizar. En la lista ves cuanto pesaba cada archivo, cuanto pesa ahora y el total.
+4. "Abrir carpeta" y sube los archivos desde el panel del vivero.
+
+Para quitarle el fondo a plantas
+  1. Pestana "Quitar fondo (plantas)" > marca "Quitarle el fondo a las fotos".
+  2. Elige el fondo: Blanco (como foto de catalogo) o Transparente (toma el color
+     de la card del sitio; si luego cambian el color, no hay que rehacer fotos).
+  3. Optimizar. Por cada foto se abre una ventana con la original y los dos recortes:
+     - "Usar este (1)" o "(2)" (o las teclas 1 y 2) para quedarte con uno.
+     - "Descartar esta foto (D)" si ninguno quedo bien.
+     - Si ves que un modelo siempre sale mejor, marca "Usar el modelo que elija para
+       todas las demas" y ya no te pregunta.
+  4. Sube los .webp en Plantas desde el panel.
+  Los videos que esten en la lista se procesan normal, sin quitarles nada.
+
+  Para que el recorte salga bien al tomar las fotos:
+  - De lado, a la altura de la maceta (no desde arriba).
+  - Que la planta ocupe buena parte de la foto y este enfocada.
+  - Con algo liso detras (pared, carton) sale casi perfecto.
+  - Si la planta sale chica en la foto, el cuadro sale mas chico (minimo 600 px,
+    lo que mide la card) para no estirarla y que se vea borrosa.
+
+Para los videos del carrusel del vivero
+  En el anuncio sube el .mp4 como archivo, y en "Mas opciones de imagen" >
+  "Imagen de espera" sube el archivo que termina en -espera.webp.
+  El sitio reproduce los videos sin sonido, por eso el perfil se lo quita (pesa menos).
+  El panel guarda los videos TAL CUAL (no los comprime), asi que este paso si importa.
+
+Extras
+- Peso maximo (KB para fotos, MB para videos): si lo llenas, ajusta la calidad
+  para que quepa en ese peso.
+- Calidad de video: Alta (tarda mas y pesa mas), Normal o Ligera.
+- Renombrar como: "Rosa del desierto" deja rosa-del-desierto-001, -002, ...
+- Las carpetas conservan sus subcarpetas en la salida.
+
+Por que los perfiles de fotos del vivero usan calidad 88
+  El panel vuelve a comprimir cada foto (WebP calidad 80). Si ya llega en 88,
+  esa segunda compresion no se nota, y la foto pesa pocos cientos de KB al subir.
+
+
+3. DESDE LA TERMINAL (opcional)
+-------------------------------
+  python optimizador.py --perfil plantas "C:\Fotos\Nuevas"
+  python optimizador.py --perfil-video carrusel video.mov --salida "C:\Listos"
+  python optimizador.py --perfil-video web --max-mb 15 --audio si "C:\Videos"
+  python optimizador.py --perfil correo foto.jpg --max-kb 150 --nombre "Suculenta"
+  python optimizador.py --quitar-fondo isnet --fondo transparente "C:\Fotos\Plantas"
+  python optimizador.py --ayuda
+
+Perfiles de fotos:  plantas, carrusel, web, whatsapp, correo, mismo
+Perfiles de video:  carrusel, web, ligero, mismo
+Quitar fondo:       --quitar-fondo isnet | u2net   --fondo blanco | transparente | crema | verde
+
+
+4. HACERLO .EXE (opcional, para usarlo sin Python)
+--------------------------------------------------
+  pip install pyinstaller
+  pyinstaller --onefile --windowed --name "Optimizador" --collect-all tkinterdnd2 --collect-all pillow_heif --collect-all imageio_ffmpeg --collect-all rembg --collect-all onnxruntime --collect-all pymatting optimizador.py
+
+El .exe queda en la carpeta dist\ (pesa mas porque lleva ffmpeg y rembg adentro;
+los modelos para quitar fondo se siguen descargando la primera vez que se usan).
